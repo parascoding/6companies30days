@@ -1,0 +1,24 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        ans = new ArrayList<>();
+        dfs(n, k, 1, 0, new ArrayList<>());
+        return ans;
+    }
+    static void dfs(int n, int k, int dig, int sum, List<Integer> list){
+        if(list.size() > k)
+            return;
+        if(dig == 10){
+            
+            if(sum == n && list.size() == k)
+                ans.add(new ArrayList<>(list));
+            return;
+        }
+        list.add(dig);
+        dfs(n, k, dig + 1, sum + dig, list);
+        list.remove(list.size() - 1);
+
+        dfs(n, k, dig + 1, sum, list);
+
+    }
+    static List<List<Integer>> ans;
+}
