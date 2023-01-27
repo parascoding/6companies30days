@@ -1,0 +1,66 @@
+class Solution {
+    public int[] maximumBobPoints(int numArrows, int[] a) {
+        int n=a.length;
+        int dp[][]=new int[n+1][numArrows+1];
+        int wt[]=new int[n];
+        for(int i=0;i<n;i++){
+            wt[i]=a[i]+1;
+        }
+        int val[]=new int[n];
+        for(int i=0;i<n;i++)
+            val[i]=i;
+        
+        return knapsack(dp,wt,val,numArrows,n);
+    }
+    static List<Node> list;
+    static class Node{
+        int i;
+        double x;
+        Node(int i,double x){
+            this.i=i;
+            this.x=x;
+        }
+    }
+    static int[] knapsack(int dp[][],int wt[],int val[],int w,int n){
+        int ans[]=new int[n];
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=w;j++)
+            {
+                if(wt[i-1]<=j){
+                    // if(val[i-1]+dp[i-1][j-wt[i-1]]>dp[i-1][j])
+                    //     ans[i-1]=wt[i-1];
+                    dp[i][j]=Math.max(val[i-1]+dp[i-1][j-wt[i-1]],dp[i-1][j]);
+                }
+                else
+                dp[i][j]=dp[i-1][j];
+            }
+            
+        }
+        // int w = W;
+        int i;
+        int res=dp[n][w];
+        for (i = n; i > 0 && res > 0; i--) {
+ 
+            
+            if (res == dp[i - 1][w])
+                continue;
+            else {
+ 
+                // This item is included.
+                ans[i-1]=wt[i-1];
+ 
+                // Since this weight is included its
+                // value is deducted
+                res = res - val[i - 1];
+                w = w - wt[i - 1];
+            }
+        }
+        if(w>0)
+            ans[0]+=w;
+        return ans;
+    
+    }
+}
+// [0,0,0,0,1,1,0,2,1,2,3,1]
+// [0,0,0,0,1,1,0,0,1,2,3,1]
